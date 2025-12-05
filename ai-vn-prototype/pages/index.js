@@ -1,54 +1,71 @@
 import { useState } from "react";
-import ChatBubble from "../components/ChatBubble";
-import SceneImage from "../components/SceneImage";
-import { generateScenePrompt } from "../lib/llm";
+import { generateSceneText } from "../lib/llm";
 import { generateSceneImage } from "../lib/imageGen";
 
 export default function Home() {
-  const [messages, setMessages] = useState([]);
-  const [sceneSrc, setSceneSrc] = useState(null);
   const [input, setInput] = useState("");
+  const [messages, setMessages] = useState([]);
 
-  async function handleSend() {
-    if (!input) return;
+  const handleSend = async () => {
+    if (!input.trim()) return;
 
-    const userMessage = { sender: "user", text: input };
-    setMessages((prev) => [...prev, userMessage]);
+    const userMessage = { role: "user", text: input };
+    setMessages((m) => [...m, userMessage]);
 
-    const scenePrompt = await generateScenePrompt(input);
-    const imgUrl = await generateSceneImage(scenePrompt);
+    // 1) 텍스트 생성
+    const sceneText = await generateSceneText(input);
 
-    setSceneSrc(imgUrl);
+    // 2) 이미지 생성
+    const sceneImage = await generateSceneImage(sceneText);
 
-    const aiMessage = {
-      sender: "ai",
-      text: "장면을 생성했어. 어떤가요?"
+    const botMessage = {
+      role: "bot",
+      text: sceneText,
+      image: sceneImage,
     };
 
-      setMessages((prev) => [...prev, aiMessage]);
-      setInput("");
-  }
+    setMessages((m) => [...m, botMessage]);
+    setInput("");
+  };
 
   return (
-    <div style={{ width: "100%", maxWidth: "600px", margin: "0 auto", padding: "20px" }}>
+    <div style={{ padding: "20px", maxWidth: "700px", margin: "auto" }}>
       <h1>AI 비주얼 노벨 MVP</h1>
 
-      <SceneImage src={sceneSrc} />
-
-      {messages.map((msg, i) => (
-        <ChatBubble key={i} sender={msg.sender} text={msg.text} />
-      ))}
-
-      <div style={{ display: "flex", marginTop: "20px" }}>
+      <div style={{ display: "flex", marginBottom: "20px" }}>
         <input
-          style={{ flex: 1, padding: "10px" }}
+          type="text"
+          placeholder="메시지를 입력하세요"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder="메시지를 입력하세요"
+          style={{ flex: 1, padding: "10px" }}
         />
         <button onClick={handleSend} style={{ padding: "10px 20px" }}>
           전송
         </button>
+      </div>
+
+      <div>
+        {messages.map((msg, i) => (
+          <div
+            key={i}
+            style={{
+              marginBottom: "20px",
+              padding: "10px",
+              border: "1px solid #ddd",
+            }}
+          >
+            <p><b>{msg.role === "user" ? "You" : "AI"}:</b> {msg.text}</p>
+
+            {msg.image && (
+              <img
+                src={msg.image}
+                alt="generated scene"
+                style={{ width: "100%", marginTop: "10px", borderRadius: "8px" }}
+              />
+            )}
+          </div>
+        ))}
       </div>
     </div>
   );
