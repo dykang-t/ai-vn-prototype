@@ -35,7 +35,8 @@ AI 기반으로 텍스트 입력을 받아 장면을 생성하고,
 
 ## 📦 폴더 구조
 
-'''ai-vn-prototype
+```
+ai-vn-prototype
  ┣ pages/
  ┃ ┗ index.js
  ┣ components/
@@ -45,7 +46,8 @@ AI 기반으로 텍스트 입력을 받아 장면을 생성하고,
  ┃ ┣ llm.js
  ┃ ┗ imageGen.js
  ┣ package.json
- ┗ README.md'''
+ ┗ README.md
+```
 
 ---
 
