@@ -25,8 +25,8 @@ export default function Home() {
       text: "장면을 생성했어. 어떤가요?"
     };
 
-    setMessages((prev) => [...prev, aiMessage]);
-    setInput("");
+      setMessages((prev) => [...prev, aiMessage]);
+      setInput("");
   }
 
   return (
