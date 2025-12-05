@@ -35,18 +35,17 @@ AI 기반으로 텍스트 입력을 받아 장면을 생성하고,
 
 ## 📦 폴더 구조
 
-ai-vn-prototype
-┣ pages/
-┃ ┗ index.js
-┣ components/
-┃ ┣ ChatBubble.js
-┃ ┗ SceneImage.js
-┣ lib/
-┃ ┣ llm.js
-┃ ┗ imageGen.js
-┣ package.json
-┗ README.md
-
+'''ai-vn-prototype
+ ┣ pages/
+ ┃ ┗ index.js
+ ┣ components/
+ ┃ ┣ ChatBubble.js
+ ┃ ┗ SceneImage.js
+ ┣ lib/
+ ┃ ┣ llm.js
+ ┃ ┗ imageGen.js
+ ┣ package.json
+ ┗ README.md'''
 
 ---
 
