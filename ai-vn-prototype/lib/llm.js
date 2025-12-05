@@ -19,3 +19,23 @@ export async function generateScenePrompt(userInput) {
   const data = await response.json();
   return data[0].generated_text;
 }
+
+export async function generateSceneText(userMessage) {
+  const res = await fetch(
+    "https://api-inference.huggingface.co/models/gpt2",
+    {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${process.env.NEXT_PUBLIC_HF_TOKEN || process.env.HF_TOKEN}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        inputs: `User: ${userMessage}\nScene:`,
+      }),
+    }
+  );
+
+  const data = await res.json();
+  const text = data[0]?.generated_text;
+  return text ? text.replace(/User:.+?Scene:/, "").trim() : "장면 설명 생성에 실패했습니다.";
+}
